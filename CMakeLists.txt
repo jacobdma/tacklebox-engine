@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.24)
-project(tacklebox_engine LANGUAGES CXX)
+project(tacklebox_engine LANGUAGES CXX C)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -25,10 +25,14 @@ FetchContent_Declare(glm
 )
 FetchContent_MakeAvailable(glm)
 
+# glad (OpenGL 4.1 core)
+add_library(glad STATIC external/glad/src/gl.c)
+target_include_directories(glad PUBLIC external/glad/include)
+
 add_library(tacklebox_engine
     src/engine.cpp
 )
 
 target_include_directories(tacklebox_engine PUBLIC include)
-target_link_libraries(tacklebox_engine PRIVATE SFML::Window SFML::System)
+target_link_libraries(tacklebox_engine PRIVATE SFML::Window SFML::System glad)
 target_link_libraries(tacklebox_engine PUBLIC glm::glm)
